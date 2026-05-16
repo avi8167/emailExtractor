@@ -1,179 +1,9 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<!--    <title>Email Extractor</title>-->
-
-<!--    <style>-->
-
-<!--        body{-->
-<!--            font-family: Arial;-->
-<!--            background: #f4f4f4;-->
-<!--            margin:0;-->
-<!--            padding:0;-->
-<!--        }-->
-
-<!--        .container{-->
-<!--            width:500px;-->
-<!--            margin:80px auto;-->
-<!--            background:white;-->
-<!--            padding:30px;-->
-<!--            border-radius:10px;-->
-<!--            box-shadow:0 0 10px rgba(0,0,0,0.1);-->
-<!--        }-->
-
-<!--        h1{-->
-<!--            text-align:center;-->
-<!--            color:#333;-->
-<!--        }-->
-
-<!--        input{-->
-<!--            width:100%;-->
-<!--            padding:10px;-->
-<!--            margin-top:20px;-->
-<!--        }-->
-
-<!--        button{-->
-<!--            width:100%;-->
-<!--            padding:12px;-->
-<!--            margin-top:20px;-->
-<!--            background:#007bff;-->
-<!--            color:white;-->
-<!--            border:none;-->
-<!--            cursor:pointer;-->
-<!--            font-size:16px;-->
-<!--        }-->
-
-<!--        button:hover{-->
-<!--            background:#0056b3;-->
-<!--        }-->
-
-<!--        #message{-->
-<!--            margin-top:20px;-->
-<!--            text-align:center;-->
-<!--            font-weight:bold;-->
-<!--        }-->
-
-<!--        table{-->
-<!--            width:100%;-->
-<!--            margin-top:30px;-->
-<!--            border-collapse:collapse;-->
-<!--        }-->
-
-<!--        table th, table td{-->
-<!--            border:1px solid #ddd;-->
-<!--            padding:10px;-->
-<!--            text-align:left;-->
-<!--        }-->
-
-<!--        table th{-->
-<!--            background:#007bff;-->
-<!--            color:white;-->
-<!--        }-->
-
-<!--    </style>-->
-
-<!--</head>-->
-<!--<body>-->
-
-<!--<div class="container">-->
-
-<!--    <h1>Email Extractor</h1>-->
-
-<!--    <input type="file" id="fileInput">-->
-
-<!--    <button onclick="uploadFile()">-->
-<!--        Upload File-->
-<!--    </button>-->
-
-<!--    <div id="message"></div>-->
-
-<!--    <table>-->
-
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>ID</th>-->
-<!--            <th>Email</th>-->
-<!--            <th>Source File</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-
-<!--        <tbody id="emailTable">-->
-
-<!--        </tbody>-->
-
-<!--    </table>-->
-
-<!--</div>-->
-
-<!--<script>-->
-
-<!--    async function uploadFile(){-->
-
-<!--        const fileInput = document.getElementById("fileInput");-->
-
-<!--        const file = fileInput.files[0];-->
-
-<!--        if(!file){-->
-<!--            alert("Please select a file");-->
-<!--            return;-->
-<!--        }-->
-
-<!--        const formData = new FormData();-->
-
-<!--        formData.append("file", file);-->
-
-<!--        const response = await fetch("/api/upload",{-->
-
-<!--            method:"POST",-->
-<!--            body:formData-->
-
-<!--        });-->
-
-<!--        const result = await response.text();-->
-
-<!--        document.getElementById("message").innerText = result;-->
-
-<!--        loadEmails();-->
-<!--    }-->
-
-<!--    async function loadEmails(){-->
-
-<!--        const response = await fetch("/api/emails");-->
-
-<!--        const data = await response.json();-->
-
-<!--        const table = document.getElementById("emailTable");-->
-
-<!--        table.innerHTML = "";-->
-
-<!--        data.forEach(email => {-->
-
-<!--            table.innerHTML += `-->
-
-<!--                <tr>-->
-<!--                    <td>${email.id}</td>-->
-<!--                    <td>${email.email}</td>-->
-<!--                    <td>${email.sourceFile}</td>-->
-<!--                </tr>-->
-
-<!--            `;-->
-<!--        });-->
-<!--    }-->
-
-<!--    loadEmails();-->
-
-<!--</script>-->
-
-<!--</body>-->
-<!--</html>-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Extractor</title>
+    <title>Smart Email Campaign System</title>
 
     <style>
 
@@ -185,23 +15,35 @@
         }
 
         body{
-            background:#f4f4f4;
+            background:#0f172a;
+            color:white;
         }
 
         .navbar{
             width:100%;
-            background:#007bff;
+            background:#1e293b;
             padding:15px 30px;
             display:flex;
-            justify-content:flex-end;
-            gap:15px;
+            justify-content:space-between;
             align-items:center;
+            flex-wrap:wrap;
+            gap:10px;
         }
 
-        .navbar input{
+        .navbar h2{
+            color:white;
+        }
+
+        .nav-actions{
+            display:flex;
+            gap:10px;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+
+        .navbar input[type="file"]{
             padding:8px;
             background:white;
-            border:none;
             border-radius:5px;
         }
 
@@ -215,32 +57,75 @@
         }
 
         .upload-btn{
-            background:#28a745;
+            background:#22c55e;
             color:white;
         }
 
         .check-btn{
-            background:#ffc107;
-            color:black;
+            background:#3b82f6;
+            color:white;
+        }
+
+        .delete-all-btn{
+            background:#dc2626;
+            color:white;
+        }
+
+        .send-btn{
+            background:#f59e0b;
+            color:white;
+            width:100%;
+            margin-top:15px;
         }
 
         .container{
             width:90%;
-            margin:40px auto;
+            margin:30px auto;
+        }
+
+        .card{
             background:white;
-            padding:20px;
-            border-radius:10px;
-            box-shadow:0 0 10px rgba(0,0,0,0.1);
+            color:black;
+            padding:25px;
+            border-radius:12px;
+            margin-bottom:25px;
+            box-shadow:0 0 10px rgba(0,0,0,0.2);
         }
 
         h1{
             margin-bottom:20px;
             text-align:center;
+            color:#0f172a;
+        }
+
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        .form-group label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:bold;
+        }
+
+        .form-group input,
+        .form-group textarea{
+            width:100%;
+            padding:12px;
+            border:1px solid #ccc;
+            border-radius:8px;
+            font-size:15px;
+        }
+
+        .form-group textarea{
+            height:180px;
+            resize:none;
         }
 
         table{
             width:100%;
             border-collapse:collapse;
+            margin-top:20px;
         }
 
         table th,
@@ -251,59 +136,130 @@
         }
 
         table th{
-            background:#007bff;
+            background:#3b82f6;
             color:white;
+        }
+
+        .delete-btn{
+            background:#ef4444;
+            color:white;
+            border:none;
+            padding:8px 12px;
+            border-radius:5px;
+            cursor:pointer;
         }
 
         #message{
             margin:20px 0;
             font-weight:bold;
             text-align:center;
-            color:green;
+            color:#22c55e;
+        }
+
+        @media(max-width:768px){
+
+            .navbar{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            table{
+                font-size:12px;
+            }
+
         }
 
     </style>
 
 </head>
+
 <body>
 
 <div class="navbar">
 
-    <input type="file" id="fileInput">
+    <h2>Smart Email Campaign</h2>
 
-    <button class="upload-btn" onclick="uploadFile()">
-        Upload File
-    </button>
+    <div class="nav-actions">
 
-    <button class="check-btn" onclick="loadEmails()">
-        Check All Emails
-    </button>
+        <input type="file" id="fileInput">
+
+        <button class="upload-btn" onclick="uploadFile()">
+            Upload File
+        </button>
+
+        <button class="check-btn" onclick="loadEmails()">
+            Load Emails
+        </button>
+
+        <button class="delete-all-btn" onclick="deleteAllEmails()">
+            Delete All Emails
+        </button>
+
+    </div>
 
 </div>
 
 <div class="container">
 
-    <h1>Email Extractor System</h1>
+    <div class="card">
 
-    <div id="message"></div>
+        <h1>Send Email To All</h1>
 
-    <table>
+        <div id="message"></div>
 
-        <thead>
+        <div class="form-group">
 
-        <tr>
-            <th>ID</th>
-            <th>Email</th>
-            <th>Source File</th>
-        </tr>
+            <label>Subject</label>
 
-        </thead>
+            <input
+                    type="text"
+                    id="subject"
+                    placeholder="Enter email subject"
+            >
 
-        <tbody id="emailTable">
+        </div>
 
-        </tbody>
+        <div class="form-group">
 
-    </table>
+            <label>Message</label>
+
+            <textarea
+                    id="emailMessage"
+                    placeholder="Write your email message..."
+            ></textarea>
+
+        </div>
+
+        <button class="send-btn" onclick="sendAllEmails()">
+            Send To All Emails
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h1>Extracted Emails</h1>
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Source File</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+
+            <tbody id="emailTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 
@@ -326,10 +282,8 @@
         formData.append("file", file);
 
         const response = await fetch("/api/upload", {
-
             method:"POST",
             body:formData
-
         });
 
         const result = await response.text();
@@ -354,14 +308,106 @@
             table.innerHTML += `
 
                 <tr>
+
                     <td>${email.id}</td>
+
                     <td>${email.email}</td>
-                    <td>${email.sourceFile}</td>
+
+<!--                    <td>${email.sourceFile}</td>-->
+                    <td>not verified</td>
+
+                    <td>
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteEmail(${email.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
                 </tr>
 
             `;
         });
     }
+
+    async function deleteEmail(id){
+
+        const response = await fetch(`/api/emails/${id}`, {
+
+            method:"DELETE"
+
+        });
+
+        const result = await response.text();
+
+        document.getElementById("message").innerText = result;
+
+        loadEmails();
+    }
+
+    async function deleteAllEmails(){
+
+        const confirmDelete =
+            confirm("Are you sure you want to delete all emails?");
+
+        if(!confirmDelete){
+            return;
+        }
+
+        const response = await fetch("/api/emails/delete-all", {
+
+            method:"DELETE"
+
+        });
+
+        const result = await response.text();
+
+        document.getElementById("message").innerText = result;
+
+        loadEmails();
+    }
+
+    async function sendAllEmails(){
+
+        const subject =
+            document.getElementById("subject").value;
+
+        const message =
+            document.getElementById("emailMessage").value;
+
+        if(subject === "" || message === ""){
+
+            alert("Please enter subject and message");
+
+            return;
+        }
+
+        const response = await fetch("/api/send-all", {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+
+                subject:subject,
+                message:message
+
+            })
+
+        });
+
+        const result = await response.text();
+
+        document.getElementById("message").innerText = result;
+    }
+
+    loadEmails();
 
 </script>
 

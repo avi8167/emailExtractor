@@ -1,8 +1,8 @@
-package com.example.emailextractor.controller;
+package com.emailTracker.emailExtractor.controller;
 
-import com.example.emailextractor.entity.EmailData;
-import com.example.emailextractor.repository.EmailRepository;
-import com.example.emailextractor.service.EmailService;
+import com.emailTracker.emailExtractor.entity.EmailData;
+import com.emailTracker.emailExtractor.service.EmailService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,17 +17,16 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    @Autowired
-    private EmailRepository repository;
-
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file") MultipartFile file) {
-        return emailService.extractEmails(file);
+
+        emailService.extractAndSaveEmails(file);
+
+        return "Emails extracted and saved successfully!";
     }
 
     @GetMapping("/emails")
     public List<EmailData> getAllEmails() {
-
-        return repository.findAll();
+        return emailService.getAllEmails();
     }
 }

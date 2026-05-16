@@ -1,4 +1,4 @@
-package com.example.emailextractor.entity;
+package com.emailTracker.emailExtractor.entity;
 
 import jakarta.persistence.*;
 
@@ -10,21 +10,23 @@ public class EmailData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String email;
-
+    @Column(name = "sourse_file")
     private String sourceFile;
 
     public EmailData() {
     }
 
-    public EmailData(String email, String sourceFile) {
+    public EmailData(String email) {
         this.email = email;
-        this.sourceFile = sourceFile;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {
@@ -33,13 +35,5 @@ public class EmailData {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSourceFile() {
-        return sourceFile;
-    }
-
-    public void setSourceFile(String sourceFile) {
-        this.sourceFile = sourceFile;
     }
 }

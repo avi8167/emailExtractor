@@ -1,13 +1,14 @@
-package com.example.emailextractor.service;
+package com.emailTracker.emailExtractor.service;
 
-import com.example.emailextractor.entity.EmailData;
-import com.example.emailextractor.repository.EmailRepository;
+import com.emailTracker.emailExtractor.entity.EmailData;
+import com.emailTracker.emailExtractor.repository.EmailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,9 +16,9 @@ import java.util.regex.Pattern;
 public class EmailService {
 
     @Autowired
-    private EmailRepository repository;
+    private EmailRepository emailRepository;
 
-    public String extractEmails(MultipartFile file) {
+    public void extractAndSaveEmails(MultipartFile file) {
 
         try {
 
@@ -27,10 +28,8 @@ public class EmailService {
 
             String line;
 
-            String regex =
-                    "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}";
-
-            Pattern pattern = Pattern.compile(regex);
+            Pattern pattern =
+                    Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}");
 
             while ((line = reader.readLine()) != null) {
 
@@ -40,24 +39,18 @@ public class EmailService {
 
                     String email = matcher.group();
 
-                    boolean exists =
-                            repository.findByEmail(email).isPresent();
+                    EmailData emailData = new EmailData(email);
 
-                    if (!exists) {
-
-                        EmailData emailData =
-                                new EmailData(email, file.getOriginalFilename());
-
-                        repository.save(emailData);
-                    }
+                    emailRepository.save(emailData);
                 }
             }
 
-            return "Emails Extracted Successfully";
-
         } catch (Exception e) {
             e.printStackTrace();
-            return "Failed";
         }
+    }
+
+    public List<EmailData> getAllEmails() {
+        return emailRepository.findAll();
     }
 }
