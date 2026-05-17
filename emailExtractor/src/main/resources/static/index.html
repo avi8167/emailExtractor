@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Smart Email Campaign System</title>
 
     <style>
@@ -11,13 +13,15 @@
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Arial, sans-serif;
+            font-family:Arial,sans-serif;
         }
 
         body{
             background:#0f172a;
             color:white;
         }
+
+        /* Navbar */
 
         .navbar{
             width:100%;
@@ -27,7 +31,7 @@
             justify-content:space-between;
             align-items:center;
             flex-wrap:wrap;
-            gap:10px;
+            gap:15px;
         }
 
         .navbar h2{
@@ -45,6 +49,7 @@
             padding:8px;
             background:white;
             border-radius:5px;
+            color:black;
         }
 
         .navbar button{
@@ -54,6 +59,12 @@
             cursor:pointer;
             font-size:14px;
             font-weight:bold;
+            transition:0.3s;
+        }
+
+        .navbar button:hover{
+            transform:scale(1.03);
+            opacity:0.9;
         }
 
         .upload-btn{
@@ -71,25 +82,71 @@
             color:white;
         }
 
-        .send-btn{
-            background:#f59e0b;
-            color:white;
-            width:100%;
-            margin-top:15px;
-        }
+        /* Container */
 
         .container{
             width:90%;
             margin:30px auto;
         }
 
+        /* Top Section */
+
+        .top-section{
+            display:flex;
+            gap:25px;
+            align-items:flex-start;
+            margin-bottom:25px;
+            flex-wrap:wrap;
+        }
+
+        /* Dashboard */
+
+        .dashboard-container{
+            flex:1;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+            gap:20px;
+        }
+
+        .dashboard-card{
+            background:white;
+            color:black;
+            padding:25px;
+            border-radius:12px;
+            text-align:center;
+            box-shadow:0 0 15px rgba(0,0,0,0.15);
+            transition:0.3s;
+        }
+
+        .dashboard-card:hover{
+            transform:translateY(-5px);
+        }
+
+        .dashboard-card h3{
+            margin-bottom:10px;
+            color:#334155;
+            font-size:18px;
+        }
+
+        .dashboard-card p{
+            font-size:30px;
+            font-weight:bold;
+            color:#3b82f6;
+        }
+
+        /* Card */
+
         .card{
             background:white;
             color:black;
             padding:25px;
             border-radius:12px;
-            margin-bottom:25px;
-            box-shadow:0 0 10px rgba(0,0,0,0.2);
+            box-shadow:0 0 15px rgba(0,0,0,0.2);
+        }
+
+        .email-card{
+            flex:1;
+            min-width:350px;
         }
 
         h1{
@@ -97,6 +154,8 @@
             text-align:center;
             color:#0f172a;
         }
+
+        /* Form */
 
         .form-group{
             margin-bottom:15px;
@@ -119,8 +178,27 @@
 
         .form-group textarea{
             height:180px;
-            resize:none;
+            resize:vertical;
         }
+
+        .send-btn{
+            background:#f59e0b;
+            color:white;
+            width:100%;
+            margin-top:15px;
+            padding:14px;
+            border:none;
+            border-radius:8px;
+            font-size:16px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .send-btn:hover{
+            opacity:0.9;
+        }
+
+        /* Table */
 
         table{
             width:100%;
@@ -140,6 +218,10 @@
             color:white;
         }
 
+        table tr:nth-child(even){
+            background:#f8fafc;
+        }
+
         .delete-btn{
             background:#ef4444;
             color:white;
@@ -149,11 +231,34 @@
             cursor:pointer;
         }
 
+        .delete-btn:hover{
+            background:#dc2626;
+        }
+
+        /* Message */
+
         #message{
             margin:20px 0;
             font-weight:bold;
             text-align:center;
-            color:#22c55e;
+            color:#16a34a;
+        }
+
+        /* Responsive */
+
+        @media(max-width:1000px){
+
+            .top-section{
+                flex-direction:column;
+            }
+
+            .dashboard-container{
+                width:100%;
+            }
+
+            .email-card{
+                width:100%;
+            }
         }
 
         @media(max-width:768px){
@@ -167,6 +272,9 @@
                 font-size:12px;
             }
 
+            .container{
+                width:95%;
+            }
         }
 
     </style>
@@ -175,13 +283,15 @@
 
 <body>
 
+<!-- Navbar -->
+
 <div class="navbar">
 
     <h2>Smart Email Campaign</h2>
 
     <div class="nav-actions">
 
-        <input type="file" id="fileInput">
+        <input type="file" id="fileInput" />
 
         <button class="upload-btn" onclick="uploadFile()">
             Upload File
@@ -199,42 +309,85 @@
 
 </div>
 
+<!-- Main Container -->
+
 <div class="container">
 
-    <div class="card">
+    <!-- Top Section -->
 
-        <h1>Send Email To All</h1>
+    <div class="top-section">
 
-        <div id="message"></div>
+        <!-- Dashboard -->
 
-        <div class="form-group">
+        <div class="dashboard-container">
 
-            <label>Subject</label>
+            <div class="dashboard-card">
+                <h3>Total Emails</h3>
+                <p id="totalEmails">0</p>
+            </div>
 
-            <input
-                    type="text"
-                    id="subject"
-                    placeholder="Enter email subject"
-            >
+            <div class="dashboard-card">
+                <h3>Emails Sent</h3>
+                <p id="emailsSent">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Failed Emails</h3>
+                <p id="failedEmails">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Uploaded Files</h3>
+                <p id="uploadedFiles">0</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Success Rate</h3>
+                <p id="successRate">0%</p>
+            </div>
 
         </div>
 
-        <div class="form-group">
+        <!-- Send Email Card -->
 
-            <label>Message</label>
+        <div class="card email-card">
 
-            <textarea
-                    id="emailMessage"
-                    placeholder="Write your email message..."
-            ></textarea>
+            <h1>Send Email To All</h1>
+
+            <div id="message"></div>
+
+            <div class="form-group">
+
+                <label>Subject</label>
+
+                <input
+                        type="text"
+                        id="subject"
+                        placeholder="Enter email subject"
+                />
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Message</label>
+
+                <textarea
+                        id="emailMessage"
+                        placeholder="Write your email message..."
+                ></textarea>
+
+            </div>
+
+            <button class="send-btn" onclick="sendAllEmails()">
+                Send To All Emails
+            </button>
 
         </div>
-
-        <button class="send-btn" onclick="sendAllEmails()">
-            Send To All Emails
-        </button>
 
     </div>
+
+    <!-- Email Table -->
 
     <div class="card">
 
@@ -245,7 +398,7 @@
             <thead>
 
             <tr>
-                <th>ID</th>
+                <th>SL</th>
                 <th>Email</th>
                 <th>Source File</th>
                 <th>Action</th>
@@ -263,153 +416,293 @@
 
 </div>
 
+<!-- JavaScript -->
+
 <script>
 
-    async function uploadFile(){
+    const API_BASE = "/api";
 
-        const fileInput = document.getElementById("fileInput");
+    // Show Message
 
-        const file = fileInput.files[0];
+    function showMessage(text, color = "#16a34a") {
 
-        if(!file){
+        const messageBox =
+            document.getElementById("message");
 
-            alert("Please select a file");
-            return;
+        messageBox.style.color = color;
+
+        messageBox.innerText = text;
+    }
+
+    // Dashboard
+
+    async function loadDashboard() {
+
+        try {
+
+            const response =
+                await fetch(`${API_BASE}/dashboard`);
+
+            const data = await response.json();
+
+            document.getElementById("totalEmails").innerText =
+                data.totalEmails;
+
+            document.getElementById("emailsSent").innerText =
+                data.emailsSent;
+
+            document.getElementById("failedEmails").innerText =
+                data.failedEmails;
+
+            document.getElementById("uploadedFiles").innerText =
+                data.uploadedFiles;
+
+            document.getElementById("successRate").innerText =
+                data.successRate.toFixed(2) + "%";
+
+        } catch(error){
+
+            console.error(error);
         }
-
-        const formData = new FormData();
-
-        formData.append("file", file);
-
-        const response = await fetch("/api/upload", {
-            method:"POST",
-            body:formData
-        });
-
-        const result = await response.text();
-
-        document.getElementById("message").innerText = result;
-
-        loadEmails();
     }
 
-    async function loadEmails(){
+    // Upload File
 
-        const response = await fetch("/api/emails");
+    async function uploadFile() {
 
-        const data = await response.json();
+        try {
 
-        const table = document.getElementById("emailTable");
+            const fileInput =
+                document.getElementById("fileInput");
 
-        table.innerHTML = "";
+            const file = fileInput.files[0];
 
-        data.forEach(email => {
+            if (!file) {
 
-            table.innerHTML += `
+                alert("Please select a file");
 
-                <tr>
+                return;
+            }
 
-                    <td>${email.id}</td>
+            const formData = new FormData();
 
-                    <td>${email.email}</td>
+            formData.append("file", file);
 
-<!--                    <td>${email.sourceFile}</td>-->
-                    <td>not verified</td>
+            showMessage("Uploading file...", "#2563eb");
 
-                    <td>
+            const response =
+                await fetch(`${API_BASE}/upload`, {
 
-                        <button
-                            class="delete-btn"
-                            onclick="deleteEmail(${email.id})"
-                        >
-                            Delete
-                        </button>
+                    method: "POST",
+                    body: formData
 
-                    </td>
+                });
 
-                </tr>
+            const result = await response.text();
 
-            `;
-        });
-    }
+            showMessage(result);
 
-    async function deleteEmail(id){
+            fileInput.value = "";
 
-        const response = await fetch(`/api/emails/${id}`, {
+            loadEmails();
+            loadDashboard();
 
-            method:"DELETE"
+        } catch (error) {
 
-        });
+            console.error(error);
 
-        const result = await response.text();
-
-        document.getElementById("message").innerText = result;
-
-        loadEmails();
-    }
-
-    async function deleteAllEmails(){
-
-        const confirmDelete =
-            confirm("Are you sure you want to delete all emails?");
-
-        if(!confirmDelete){
-            return;
+            showMessage("File upload failed!", "#dc2626");
         }
-
-        const response = await fetch("/api/emails/delete-all", {
-
-            method:"DELETE"
-
-        });
-
-        const result = await response.text();
-
-        document.getElementById("message").innerText = result;
-
-        loadEmails();
     }
 
-    async function sendAllEmails(){
+    // Load Emails
 
-        const subject =
-            document.getElementById("subject").value;
+    async function loadEmails() {
 
-        const message =
-            document.getElementById("emailMessage").value;
+        try {
 
-        if(subject === "" || message === ""){
+            const response =
+                await fetch(`${API_BASE}/emails`);
 
-            alert("Please enter subject and message");
+            const data = await response.json();
 
-            return;
+            const table =
+                document.getElementById("emailTable");
+
+            table.innerHTML = "";
+
+            if (data.length === 0) {
+
+                table.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align:center;">
+                            No emails found
+                        </td>
+                    </tr>
+                `;
+
+                return;
+            }
+
+            data.forEach((email, index) => {
+
+                table.innerHTML += `
+
+                    <tr>
+
+                        <td>${index + 1}</td>
+
+                        <td>${email.email}</td>
+
+                        <td>${email.sourceFile || "N/A"}</td>
+
+                        <td>
+
+                            <button
+                                class="delete-btn"
+                                onclick="deleteEmail(${email.id})"
+                            >
+                                Delete
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+            });
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage("Failed to load emails!", "#dc2626");
         }
-
-        const response = await fetch("/api/send-all", {
-
-            method:"POST",
-
-            headers:{
-                "Content-Type":"application/json"
-            },
-
-            body:JSON.stringify({
-
-                subject:subject,
-                message:message
-
-            })
-
-        });
-
-        const result = await response.text();
-
-        document.getElementById("message").innerText = result;
     }
+
+    // Delete Single Email
+
+    async function deleteEmail(id) {
+
+        try {
+
+            const response =
+                await fetch(`${API_BASE}/emails/${id}`, {
+
+                    method: "DELETE"
+
+                });
+
+            const result = await response.text();
+
+            showMessage(result);
+
+            loadEmails();
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage("Delete failed!", "#dc2626");
+        }
+    }
+
+    // Delete All Emails
+
+    async function deleteAllEmails() {
+
+        try {
+
+            const confirmDelete =
+                confirm("Are you sure you want to delete all emails?");
+
+            if (!confirmDelete) {
+                return;
+            }
+
+            const response =
+                await fetch(`${API_BASE}/emails/delete-all`, {
+
+                    method: "DELETE"
+
+                });
+
+            const result = await response.text();
+
+            showMessage(result);
+
+            loadEmails();
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage("Delete all failed!", "#dc2626");
+        }
+    }
+
+    // Send All Emails
+
+    async function sendAllEmails() {
+
+        try {
+
+            const subject =
+                document.getElementById("subject").value.trim();
+
+            const message =
+                document.getElementById("emailMessage").value.trim();
+
+            if (subject === "" || message === "") {
+
+                alert("Please enter subject and message");
+
+                return;
+            }
+
+            showMessage("Sending emails...", "#2563eb");
+
+            const response =
+                await fetch(`${API_BASE}/send-all`, {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        subject: subject,
+                        message: message
+
+                    })
+
+                });
+
+            const result = await response.text();
+
+            showMessage(result);
+
+            loadDashboard();
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage("Failed to send emails!", "#dc2626");
+        }
+    }
+
+    // Auto Load
 
     loadEmails();
+    loadDashboard();
 
 </script>
 
 </body>
+
 </html>
